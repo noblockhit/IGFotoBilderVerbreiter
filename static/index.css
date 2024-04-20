@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=JetBrains Mono');
+* {
+    --font-family: 'Roboto', sans-serif; /* set the font family to Roboto */
+    font-family: var(--font-family);
+}
+
+
+:root {
+    --background-color: #ffffff; /* white */
+    --accent-color-1: #d0d0d0; /* light grey */
+    --contrast-color: #3838e6; /* blue */
+}
+
+.no-display {
+    display: none;
+}
+
+.flex-line-break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+     /* apply the font family to the body */
+}
+
+h1 {
+    font-size: 2em;
+}
+
+.container {
+    background-color: var(--accent-color-1);
+    box-shadow: 0 0 1em var(--contrast-color);
+    flex-grow: 1;
+    margin: 1.5em;
+    display: flex;
+    flex-direction: row;
+    justify-items: auto;
+    border-radius: 1.5em 0 1.5em 0;
+}
+
+.sub-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+}
+
+#code-editor-container {
+    width: 100%;
+    height: 100%;
+    text-align: left;
+}
+
+button, label {
+    border: none;
+    font-size: 1.2em; /* increase the font size relative to the parent element */
+    padding: 0.3em .6em; /* add padding to increase the button size */
+    border-radius: 0.2em; /* add rounded corners to the button */
+    background-color: var(--contrast-color);
+    color: white; /* assuming you want white text on blue buttons */
+    margin: .4em;
+    top: 0;
+}
+
+.fileContainer {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.file-div {
+    margin: 1em;
+    padding: 1em;
+    background-color: var(--background-color);
+    border-radius: .2em;
+    /* make the div as small as possible while still containing its elements*/
+    max-height: 12em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    object-fit: contain;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.preview-image {
+    max-width: 50%;
+    max-height: 10em !important;
+}
+
+
+.CodeMirror * {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; /* Adjust font size as needed */
+}
+
+
+/* 
+
+#authentification {
+    background-color: #ff0000;
+}
+
+#files {
+    background-color: #00ff00;
+} */

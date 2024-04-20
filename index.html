@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Office file distributer</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.js" integrity="sha384-o4ufwq3oKqc7IoCcR08YtZXmgOljhTggRwxP2CLbSqeXGtitAxwYaUln/05nJjit" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/theme/3024-night.min.css">
+
+    <script defer src="./renderer.js"></script>
+    <link rel="stylesheet" href="./static/index.css">
+
+</head>
+<body>
+    <h1>Office file distributer</h1>
+    <div class="container">
+        <div class="sub-container" id="authentification">
+            <button id="loginBtn" command="LOGIN">Login with Microsoft</button>
+            <div id="code-editor-container">
+                <textarea id="code">
+                </textarea>
+            </div>
+        </div>
+        <div class="sub-container" id="files">
+            <label for="uploadFilesInput">Upload Files</label>
+            <input type="file" id="uploadFilesInput" class="no-display" multiple>
+            <div id="fileContainer"></div>
+        </div>
+    </div>
+</body>
+</html>

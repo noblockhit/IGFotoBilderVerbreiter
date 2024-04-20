@@ -53,7 +53,6 @@ ipcMain.handle("LOGOUT", async () => {
 
 ipcMain.handle("SEND_EMAIL", async (event, args) => {
     // emailAddr, subject, textContent, imageName = null, imageAttachmentBytes = null
-    console.log(args);
     // add an image attachment to the email
     const email = {
         message: {
@@ -92,9 +91,9 @@ ipcMain.handle("SEND_EMAIL", async (event, args) => {
             },
             body: JSON.stringify(email)
         });
-
-        console.log('Email sent:', email, response);
+        console.log(response);
+        return ['Email sent:', email, response.status, response.statusText];
     } catch (error) {
-        console.error('Error sending email:', error);
+        return ['Error sending email:', error];
     }
 });

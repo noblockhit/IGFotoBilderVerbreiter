@@ -53,9 +53,9 @@ class AuthProvider {
     async logout () {
         try {
             this.cache.removeAccount(this.account);
-            this.account = null;
 
             await shell.openExternal(`https://login.microsoftonline.com/${this.authorityString}/oauth2/v2.0/logout?logout_hint=${this.account.idTokenClaims["login_hint"]}`);
+            this.account = null;
 
         } catch (error) {
             console.log(error);

@@ -1,15 +1,16 @@
 const loginBtn = $("#loginBtn");
 
-// Add an event listener to send an IPC event when the button is clicked
+let loggedIn = false;
+
 loginBtn.on("click", async () => {
-    // Send a message to the main process with the event name and optional data
-    const account = await window.renderer.sendLoginMessage();
-    
-    // var accessToken = loginResponse.accessToken;
-    // const account = msalInstance.getAllAccounts()[0];
-    // const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
-    // globalAccessToken = accessToken;
-    loginBtn.text(`Logged in as ${account.name} (${account.username})`);
+    if (!loggedIn) {
+        const account = await window.renderer.sendLoginMessage();
+        loginBtn.text(`Logout from ${account.name} (${account.username})`);
+    } else {
+        await window.renderer.sendLogoutMessage();
+        loginBtn.text("Login with Microsoft");
+    }
+    loggedIn = !loggedIn;
 });
 
 allImages = [];
@@ -129,7 +130,7 @@ uploadFilesInput.on("change", async function (e) {
 
 async function sendEmail(emailAddr, subject, textContent, imageName = null, imageAttachmentBytes = null) {
     // add an image attachment to the email
-    await window.renderer.sendEmail({emailAddr, subject, textContent, imageName, imageAttachmentBytes});
+    return await window.renderer.sendEmail({emailAddr, subject, textContent, imageName, imageAttachmentBytes});
 }
 
 function sleep(secs) {

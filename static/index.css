@@ -5,7 +5,6 @@
     font-family: var(--font-family);
 }
 
-
 :root {
     --background-color: #ffffff; /* white */
     --accent-color-1: #d0d0d0; /* light grey */
@@ -45,16 +44,17 @@ h1 {
     flex-grow: 1;
     margin: 1.5em;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     justify-items: auto;
     border-radius: 1.5em 0 1.5em 0;
+    justify-content: flex-end;
 }
 
 .sub-container {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: top;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -114,12 +114,34 @@ button, label {
 }
 
 
-/* 
-
-#authentification {
-    background-color: #ff0000;
+#terminalTextarea {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px; /* Adjust font size as needed */
+    width: calc(100% - 4em);
+    flex: 1;
+    flex-grow: 1;
+    margin: 1em;
+    border-radius: 1em;
+    background-color: var(--background-color);
+    color: black;
+    border: none;
+    resize: none;
+    overflow: auto;
+    padding: .3em .6em;
 }
 
-#files {
-    background-color: #00ff00;
-} */
+
+.rowone {
+    flex: 1;
+    flex-basis: 50%;
+}
+
+
+.rowtwo {
+    justify-content: flex-end;
+    display: flex;
+    flex-basis: 100%;
+    margin-top: 0 !important;
+}
+
+

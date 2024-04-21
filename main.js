@@ -8,12 +8,15 @@ let globalAccessToken = null;
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1500,
+        height: 900,
+        minWidth: 700,
+        minHeight: 450,
         webPreferences: {
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js'),
         },
+        icon: path.join(__dirname, 'assets', 'icon.png')
     });
     mainWindow.loadFile('index.html');
 };

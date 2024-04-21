@@ -1,6 +1,7 @@
 const { PublicClientApplication } = require('@azure/msal-node');
 const { shell } = require('electron');
 
+
 class AuthProvider {
     
     clientApplication;

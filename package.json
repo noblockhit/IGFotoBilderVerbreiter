@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "author": "Richard Galfi",
   "license": "ISC",
@@ -14,6 +15,32 @@
     "jquery": "^3.7.1"
   },
   "devDependencies": {
-    "electron": "^30.0.1"
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "wgn.electrons.igfotobilderverbreiter",
+    "productName": "IG Foto Verteiler",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "AuthProvider.js",
+      "renderer.js",
+      "node_modules/**/*",
+      "static/**/*"
+    ],
+    "directories": {
+      "output": "dist" 
+    },
+    "mac": {
+      "target": "dmg" 
+    },
+    "win": {
+      "target": "nsis" 
+    },
+    "linux": {
+      "target": ["AppImage", "deb"] 
+    }
   }
 }

@@ -1,4 +1,7 @@
 const loginBtn = $("#loginBtn");
+const uploadFilesInput = $("#uploadFilesInput");
+const fileContainer = $("#fileContainer");
+const terminalTextarea = $("#terminalTextarea");
 
 let loggedIn = false;
 
@@ -13,6 +16,8 @@ loginBtn.on("click", async () => {
     loggedIn = !loggedIn;
 });
 
+
+
 allImages = [];
 globalAccessToken = null;
 
@@ -26,6 +31,18 @@ class Image {
     remove() {
         this._container.remove();
         allImages.splice(allImages.indexOf(this), 1);
+    }
+}
+
+async function evaluateAsyncCode(code, onComplete) {
+    try {
+        await eval(code);  // Wait for async operations to complete
+        if (onComplete) {
+            onComplete();  // Call the callback when done
+        }
+    } catch (error) {
+        log(`An error occured: ${error.message}`);
+        onComplete();
     }
 }
 
@@ -49,12 +66,19 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
             cm.replaceSelection(spaces);
         },
         F5: function (cm) {
-            // Override F5 key
-            // Execute the code (You need to define a function to execute the code)
-            console.log("Executing code...");
+            const start = performance.now();
+            
+            function onEvalComplete() {
+                const end = performance.now();
+                const duration = (end - start).toFixed(2);
+                log(`Code executed in ${duration}ms`);
+            }
+
+            log("Executing code:");
             var code = cm.getValue();
-            var wrapped = `(async () => {${code}})();`;
-            eval(wrapped);
+            var wrapped = `(async () => {${code}})();`
+            
+            evaluateAsyncCode(wrapped, onEvalComplete);
         },
     },
 });
@@ -70,8 +94,7 @@ editor.setValue(
         "}\n"
 );
 
-uploadFilesInput = $("#uploadFilesInput");
-fileContainer = $("#fileContainer");
+terminalTextarea.val(terminalTextarea.val() + "Press F5 to run your code...\n\n");
 
 uploadFilesInput.on("change", async function (e) {
     var files = e.target.files;
@@ -127,6 +150,98 @@ uploadFilesInput.on("change", async function (e) {
         }
     }
 });
+
+function recursiveIterate(dict, callback) {
+    for (const key in dict) {
+        if (dict.hasOwnProperty(key)) {  // Check if the key is part of the object and not inherited
+            const value = dict[key];
+            callback(key, value);  // Perform an operation on key-value pairs
+
+            // Check if the value is an object (or array), indicating that we should recurse
+            if (typeof value === "object" && value !== null) {
+                recursiveIterate(value, callback);  // Recursive call
+            }
+        }
+    }
+}
+// A helper function to truncate strings if they exceed a certain length
+function truncateString(str, maxLength) {
+    if (typeof str === 'string' && str.length > maxLength) {
+        return str.substring(0, maxLength) + '...';
+    }
+    return str;
+}
+
+function avoidCircularRefs() {
+    const seen = new Set();
+    return function (key, value) {
+        if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+                return "[Circular]";  // Indicate circular reference
+            }
+            seen.add(value);
+        }
+        return value;
+    };
+}
+
+// A helper function to convert large integers to scientific notation if needed
+function formatInteger(value, threshold) {
+    if (typeof value === 'number' && Number.isInteger(value) && Math.abs(value) >= threshold) {
+        return value.toExponential(Math.log10(threshold)-6);  // Convert to scientific notation
+    }
+    return value;
+}
+
+// A custom replacer function for JSON.stringify
+function advancedReplacer(maxStringLength = 20, largeIntegerThreshold = 1e6) {
+    const avoidCircular = avoidCircularRefs();  // To avoid circular references
+
+    return function (key, value) {
+        // First, handle circular references
+        value = avoidCircular(key, value);
+
+        // Truncate long strings
+        if (typeof value === 'string') {
+            return truncateString(value, maxStringLength);
+        }
+
+        // Convert large integers to scientific notation
+        if (typeof value === 'number' && Number.isInteger(value)) {
+            return formatInteger(value, largeIntegerThreshold);
+        }
+
+        // Additional type-based handling
+        if (typeof value === 'boolean') {
+            return value ? "True" : "False";  // Display booleans as "True" or "False"
+        }
+
+        if (value instanceof Date) {
+            return value.toISOString();  // Format dates as ISO strings
+        }
+
+        return value;  // Default behavior
+    };
+}
+
+let logCount = 1;
+
+// A custom logger function that JSON stringifies an object with the custom replacer
+print = log = (...args) => {
+    full_string = "";
+    for (const obj of args) {
+        
+        full_string += JSON.stringify(obj, advancedReplacer(100, 1e12), 2) + " ";
+    }  // Pretty-print with 2 spaces indentation
+    if (full_string === undefined) {
+        return;
+    }
+    terminalTextarea.val(`${terminalTextarea.val()}${logCount}: ${full_string.replaceAll("\n", "\n   ")}\n`);
+    terminalTextarea.scrollTop(terminalTextarea[0].scrollHeight);
+    logCount++;
+}
+
+
 
 async function sendEmail(emailAddr, subject, textContent, imageName = null, imageAttachmentBytes = null) {
     // add an image attachment to the email

@@ -31,16 +31,19 @@
       "static/**/*"
     ],
     "directories": {
-      "output": "dist" 
+      "output": "dist"
     },
     "mac": {
-      "target": "dmg" 
+      "target": "dmg"
     },
     "win": {
-      "target": "nsis" 
+      "target": "nsis"
     },
     "linux": {
-      "target": ["AppImage", "deb"] 
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     }
   }
 }

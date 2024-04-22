@@ -20,18 +20,18 @@
     <h1>Office file distributer</h1>
     <div class="container">
         <div class="sub-container rowone" id="authentification">
-            <button id="loginBtn" command="LOGIN">Login with Microsoft</button>
-            <div id="code-editor-container">
-                <textarea id="code">
+            <button id="loginBtn" command="LOGIN" tabindex="1">Login with Microsoft</button>
+            <div id="code-editor-container" tabindex="4">
+                <textarea id="code" tabindex="3">
                 </textarea>
             </div>
         </div>
         <div class="sub-container rowone" id="files">
-            <label for="uploadFilesInput">Upload Files</label>
+            <label id="uploadFilesLabel" for="uploadFilesInput" tabindex="2">Upload Files</label>
             <input type="file" id="uploadFilesInput" class="no-display" multiple>
             <div id="fileContainer"></div>
         </div>
-        <div class="sub-container" id="terminalTextarea-container">
+        <div class="sub-container rowtwo" id="terminalTextarea-container">
             <textarea id="terminalTextarea" readonly></textarea>
         </div>
     </div>

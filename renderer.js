@@ -5,6 +5,7 @@ const codeEditorContainer = $("#code-editor-container");
 const codeTextArea = $("#code");
 const fileContainer = $("#fileContainer");
 const terminalTextarea = $("#terminalTextarea");
+var removeFileButtons = $(".removeFileButton");
 
 let loggedIn = false;
 
@@ -26,6 +27,21 @@ uploadFilesLabel.on("keydown", function (e) {
     }
 });
 
+
+fileContainer.on('focus', '.removeFileButton', function(e) {
+    $(this).parent()[0].scrollIntoView({
+        block: 'nearest'    // Nearest alignment
+    });
+});
+
+fileContainer.on('click', '.removeFileButton', function(e) {
+    for (var i=0; i<allImages.length; i++) {
+        if (allImages[i]._container[0] === $(this).parent()[0]) {
+            allImages[i].remove();
+            break;
+        }
+    }
+});
 
 
 allImages = [];
@@ -106,6 +122,15 @@ editor.setValue(
         "}\n"
 );
 
+codeEditorContainer.on("keydown", function (e) {
+    if (e.key === "Enter") {
+        setTimeout(() => {
+            editor.focus();
+        }, 50);
+    }
+});
+
+
 terminalTextarea.val(terminalTextarea.val() + "Click in the code editor and press F5 to run your code...\n\n");
 
 uploadFilesInput.on("change", async function (e) {
@@ -133,7 +158,7 @@ uploadFilesInput.on("change", async function (e) {
                     fileDiv.addClass("file-div");
 
                     
-                    var removeButton = $(`<button class="removeFileButton" aria-label="Remove file">&times;</button>`);
+                    var removeButton = $(`<button class="removeFileButton" aria-label="Remove file" tabindex="${allImages.length+1000}">&times;</button>`);
                     fileDiv.append(removeButton);
 
                     var flexLineBreak = $("<div>");
@@ -155,7 +180,6 @@ uploadFilesInput.on("change", async function (e) {
                     fileDiv.append(flexLineBreak);
                     fileDiv.append(fileName);
 
-                    // Append the file div to the file container
                     fileContainer.append(fileDiv);
                     allImages.push(new Image(file.name, fileDiv, base64Data));
                 };

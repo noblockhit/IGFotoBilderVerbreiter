@@ -21,8 +21,8 @@
     <div class="container">
         <div class="sub-container rowone" id="authentification">
             <button id="loginBtn" command="LOGIN" tabindex="1">Login with Microsoft</button>
-            <div id="code-editor-container" tabindex="4">
-                <textarea id="code" tabindex="3">
+            <div id="code-editor-container" tabindex="1000000">
+                <textarea id="code" tabindex="-1">
                 </textarea>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div id="fileContainer"></div>
         </div>
         <div class="sub-container rowtwo" id="terminalTextarea-container">
-            <textarea id="terminalTextarea" readonly></textarea>
+            <textarea id="terminalTextarea" readonly tabindex="1000001"></textarea>
         </div>
     </div>
 </body>

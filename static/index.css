@@ -5,6 +5,7 @@
     --font-family: 'Roboto', sans-serif;
     /* set the font family to Roboto */
     font-family: var(--font-family);
+    scroll-behavior: smooth;
 }
 
 
@@ -15,6 +16,7 @@
     --accent-color-1: #d0d0d0;
     /* light grey */
     --contrast-color: #3838e6;
+    --accent-contrast-color-1: #0d1274;
     /* blue */
 }
 
@@ -41,14 +43,29 @@
     display: none;
 }
 
-:focus {
-    border: 2px solid #ff5733;
-    /* Orange border on focus */
-    box-shadow: 0 0 5px #ff5733;
-    /* Optional: add a glow effect */
-    outline: none;
-    /* Remove default outline (if desired) */
+@keyframes expanding-outline {
+    0%, 80% {      /*  0%  */
+        outline-width: .1em;
+        box-shadow: 0 0 .2em  .1em #FDDE01;
+    }
+    40% {           /* 50% */
+        outline-width: .2em;
+        box-shadow: 0 0 .6em  .3em #FDDE01;
+    }
+    30%, 50% {           /* 100% */
+        outline-width: .3em;
+        box-shadow: 0 0 1em  .5em #FDDE01;
+    }
 }
+
+:focus {
+    box-shadow: 0 0 1em #FDDE01;
+    outline: .1em solid var(--accent-contrast-color-1);
+    animation: expanding-outline 2s infinite linear;
+    
+}
+
+
 
 html,
 body {
@@ -149,6 +166,7 @@ label {
     border-radius: .2em;
     /* make the div as small as possible while still containing its elements*/
     max-height: 12em;
+    position: relative;
 }
 
 #fileContainer :last-child {
@@ -197,15 +215,18 @@ label {
 }
 
 .removeFileButton {
+    position: absolute;  /* Absolute positioning */
+    top: .5em;              /* Align to the top */
+    right: .5em;            /* Align to the right */
     background: transparent;
     border: none;
+    border-radius: 50%;
     color: #000;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
+    font-size: 1.5rem;   /* Adjust to your preference */
+    cursor: pointer;     /* Change cursor to pointer on hover */
 }
 
-.removeFileButton:hover {
+.removeFileButton:hover, .removeFileButton:focus {
+    animation: none;
     color: #f00;
 }

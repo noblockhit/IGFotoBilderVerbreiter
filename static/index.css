@@ -1,26 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=JetBrains Mono');
+
 * {
-    --font-family: 'Roboto', sans-serif; /* set the font family to Roboto */
+    --font-family: 'Roboto', sans-serif;
+    /* set the font family to Roboto */
     font-family: var(--font-family);
 }
 
+
+
 :root {
-    --background-color: #ffffff; /* white */
-    --accent-color-1: #d0d0d0; /* light grey */
-    --contrast-color: #3838e6; /* blue */
+    --background-color: #ffffff;
+    /* white */
+    --accent-color-1: #d0d0d0;
+    /* light grey */
+    --contrast-color: #3838e6;
+    /* blue */
+}
+
+::-webkit-scrollbar {
+    width: 1em;
+    height: 1em;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--contrast-color);
+    border-radius: .5em;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: .5em;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
 }
 
 .no-display {
     display: none;
 }
 
-.flex-line-break {
-    flex-basis: 100%;
-    height: 0;
+:focus {
+    border: 2px solid #ff5733;
+    /* Orange border on focus */
+    box-shadow: 0 0 5px #ff5733;
+    /* Optional: add a glow effect */
+    outline: none;
+    /* Remove default outline (if desired) */
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     top: 0;
@@ -31,75 +62,98 @@ html, body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-     /* apply the font family to the body */
+    overflow: hidden;
+    /* apply the font family to the body */
 }
 
 h1 {
     font-size: 2em;
 }
 
+label {
+    display: flex;
+    justify-content: center;
+    /* Horizontal centering */
+    align-items: center;
+}
+
 .container {
     background-color: var(--accent-color-1);
     box-shadow: 0 0 1em var(--contrast-color);
     flex-grow: 1;
-    margin: 1.5em;
-    display: flex;
-    flex-wrap: wrap;
-    justify-items: auto;
+    margin: 0 1.5em 1.5em 1.5em;
     border-radius: 1.5em 0 1.5em 0;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns of equal width */
+    grid-template-rows: 70% 30%;
+    /* The bottom row is smaller */
+    overflow: hidden;
+    gap: 1em;
 }
 
 .sub-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    text-align: center;
 }
 
+
 #code-editor-container {
-    width: 100%;
-    height: 100%;
+    overflow-y: auto;
     text-align: left;
 }
 
-button, label {
+.CodeMirror ::-webkit-scrollbar-track,
+.CodeMirror-focused ::-webkit-scrollbar-track,
+.CodeMirror ::-webkit-scrollbar-thumb,
+.CodeMirror-focused ::-webkit-scrollbar-thumb {
+    border-radius: 0;
+}
+
+button,
+label {
     border: none;
-    font-size: 1.2em; /* increase the font size relative to the parent element */
-    padding: 0.3em .6em; /* add padding to increase the button size */
-    border-radius: 0.2em; /* add rounded corners to the button */
+    font-size: 1.2em;
+    /* increase the font size relative to the parent element */
+    padding: 0.3em .6em;
+    /* add padding to increase the button size */
+    border-radius: 0.2em;
+    /* add rounded corners to the button */
     background-color: var(--contrast-color);
-    color: white; /* assuming you want white text on blue buttons */
-    margin: .4em;
+    color: white;
+    /* assuming you want white text on blue buttons */
     top: 0;
 }
 
-.fileContainer {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+#loginBtn {
+    margin: 1em 0 1em 1em;
+}
+
+#uploadFilesLabel {
+    margin: 1em 1em 1em 0;
+}
+
+#fileContainer {
+    font-size: 1.2em;
+    overflow-y: scroll;
+    margin-right: 1em;
+    border-radius: 0.2em;
+    /* add rounded corners to the button */
 }
 
 
 .file-div {
-    margin: 1em;
+    margin-bottom: 1em;
+    margin-right: 1em;
     padding: 1em;
     background-color: var(--background-color);
     border-radius: .2em;
     /* make the div as small as possible while still containing its elements*/
     max-height: 12em;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    object-fit: contain;
-    align-items: center;
-    justify-content: center;
 }
 
-
+#fileContainer :last-child {
+    margin-bottom: 0;
+}
 
 
 .preview-image {
@@ -110,16 +164,17 @@ button, label {
 
 .CodeMirror * {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; /* Adjust font size as needed */
+    font-size: 14px;
+    /* Adjust font size as needed */
 }
 
 
 #terminalTextarea {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px; /* Adjust font size as needed */
+    font-size: 14px;
+    /* Adjust font size as needed */
     width: calc(100% - 4em);
-    flex: 1;
-    flex-grow: 1;
+    height: calc(100% - 4em);
     margin: 1em;
     border-radius: 1em;
     background-color: var(--background-color);
@@ -130,18 +185,27 @@ button, label {
     padding: .3em .6em;
 }
 
-
 .rowone {
-    flex: 1;
-    flex-basis: 50%;
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    /* One column */
+    grid-template-rows: 5em auto;
 }
-
 
 .rowtwo {
-    justify-content: flex-end;
-    display: flex;
-    flex-basis: 100%;
-    margin-top: 0 !important;
+    grid-column: span 2;
 }
 
+.removeFileButton {
+    background: transparent;
+    border: none;
+    color: #000;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
 
+.removeFileButton:hover {
+    color: #f00;
+}

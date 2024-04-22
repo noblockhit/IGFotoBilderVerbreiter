@@ -1,5 +1,8 @@
 const loginBtn = $("#loginBtn");
 const uploadFilesInput = $("#uploadFilesInput");
+const uploadFilesLabel = $("#uploadFilesLabel");
+const codeEditorContainer = $("#code-editor-container");
+const codeTextArea = $("#code");
 const fileContainer = $("#fileContainer");
 const terminalTextarea = $("#terminalTextarea");
 
@@ -14,6 +17,13 @@ loginBtn.on("click", async () => {
         loginBtn.text("Login with Microsoft");
     }
     loggedIn = !loggedIn;
+});
+
+// event when is focused and enter is pressed
+uploadFilesLabel.on("keydown", function (e) {
+    if (e.key === "Enter") {
+        uploadFilesInput.click();
+    }
 });
 
 
@@ -46,7 +56,6 @@ async function evaluateAsyncCode(code, onComplete) {
     }
 }
 
-codeTextArea = $("#code");
 var editor = CodeMirror.fromTextArea(codeTextArea[0], {
     lineNumbers: true, // Enable line numbers
     mode: "javascript", // Set syntax highlighting mode
@@ -80,6 +89,9 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
             
             evaluateAsyncCode(wrapped, onEvalComplete);
         },
+        Esc: function (cm) {
+            codeEditorContainer.focus();
+        }
     },
 });
 editor.setSize("100%", "100%");
@@ -94,7 +106,7 @@ editor.setValue(
         "}\n"
 );
 
-terminalTextarea.val(terminalTextarea.val() + "Press F5 to run your code...\n\n");
+terminalTextarea.val(terminalTextarea.val() + "Click in the code editor and press F5 to run your code...\n\n");
 
 uploadFilesInput.on("change", async function (e) {
     var files = e.target.files;
@@ -119,6 +131,10 @@ uploadFilesInput.on("change", async function (e) {
                     // Create a div to hold file details
                     var fileDiv = $("<div>");
                     fileDiv.addClass("file-div");
+
+                    
+                    var removeButton = $(`<button class="removeFileButton" aria-label="Remove file">&times;</button>`);
+                    fileDiv.append(removeButton);
 
                     var flexLineBreak = $("<div>");
                     flexLineBreak.addClass("flex-line-break");

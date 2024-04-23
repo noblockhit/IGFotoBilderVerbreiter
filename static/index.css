@@ -44,15 +44,15 @@
 }
 
 @keyframes expanding-outline {
-    0%, 80% {      /*  0%  */
+    30%, 90% {      /*  0%  */
         outline-width: .1em;
         box-shadow: 0 0 .2em  .1em #FDDE01;
     }
-    40% {           /* 50% */
+    10% {           /* 50% */
         outline-width: .2em;
         box-shadow: 0 0 .6em  .3em #FDDE01;
     }
-    30%, 50% {           /* 100% */
+    0%, 20%, 100% {           /* 100% */
         outline-width: .3em;
         box-shadow: 0 0 1em  .5em #FDDE01;
     }
@@ -192,8 +192,9 @@ label {
     font-size: 14px;
     /* Adjust font size as needed */
     width: calc(100% - 4em);
-    height: calc(100% - 4em);
-    margin: 1em;
+    height: calc(100% - 3em);
+    margin-right: 1em;
+    margin-left: 1em;
     border-radius: 1em;
     background-color: var(--background-color);
     color: black;

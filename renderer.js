@@ -43,6 +43,12 @@ fileContainer.on('click', '.removeFileButton', function(e) {
     }
 });
 
+fileContainer.on('keydown', '.removeFileButton', function(e) {
+    if (e.key === "Escape") {
+        codeEditorContainer.focus();
+    }
+});
+
 
 allImages = [];
 globalAccessToken = null;

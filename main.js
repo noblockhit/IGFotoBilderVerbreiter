@@ -16,7 +16,7 @@ const createWindow = () => {
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js'),
         },
-        icon: path.join(__dirname, 'assets', 'icon.png'),
+        icon: path.join(__dirname, 'assets', 'icon.ico'),
         autoHideMenuBar: true,
     });
     mainWindow.loadFile('index.html');

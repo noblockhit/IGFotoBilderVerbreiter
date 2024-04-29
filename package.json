@@ -30,6 +30,12 @@
       "node_modules/**/*",
       "static/**/*"
     ],
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "icon": "assets/icon.ico",
     "directories": {
       "output": "dist"
     },
@@ -37,13 +43,15 @@
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/icon.ico"
     },
     "linux": {
       "target": [
         "AppImage",
         "deb"
-      ]
+      ],
+      "icon": "assets/icon.png"
     }
   }
 }

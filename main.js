@@ -1,10 +1,20 @@
 const path = require('path');
-const { app, ipcMain, BrowserWindow } = require('electron');
+const { app, ipcMain, protocol, BrowserWindow } = require('electron');
 const AuthProvider = require('./AuthProvider');
 
 let mainWindow;
-const authProvider = new AuthProvider();
+let authProvider = null;
 let globalAccessToken = null;
+
+
+if (process.defaultApp) {
+    if (process.argv.length >= 2) {
+      app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
+    }
+  } else {
+    app.setAsDefaultProtocolClient('electron-fiddle')
+  }
+
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -20,11 +30,30 @@ const createWindow = () => {
         autoHideMenuBar: true,
     });
     mainWindow.loadFile('index.html');
+    authProvider = new AuthProvider(app, mainWindow);
 };
 
-app.on('ready', () => {
-    createWindow();
-});
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+    // the commandLine is array of strings in which last element is deep link url
+    // dialog.showErrorBox('Welcome Back', `You arrived from: ${commandLine.pop()}`)
+    mainWindow.show();
+  })
+
+  // Create mainWindow, load the rest of the app, etc...
+  app.whenReady().then(() => {
+    createWindow()
+  })
+}
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

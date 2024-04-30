@@ -1,17 +1,25 @@
 const { PublicClientApplication } = require('@azure/msal-node');
 const { shell } = require('electron');
 
+function ensureVisible(app, mainWindow) {
+    mainWindow.restore(); // Restore if minimized
+    mainWindow.show(); // Ensure the window is visible
+    mainWindow.focus(); // Ensure the window is focused
+}
 
 class AuthProvider {
-    
+
     clientApplication;
     msalConfig;
     cache;
     account;
-
+    app;
+    mainWindow;
     authorityString = "724d16e5-093c-45bb-b709-b26daf97e3f8";
 
-    constructor () {
+    constructor(app, mainWindow) {
+        this.app = app;
+        this.mainWindow = mainWindow;
         this.msalConfig = {
             auth: {
                 clientId: '8c6718ba-f60f-4740-9b06-f696eaf3d493',
@@ -32,26 +40,28 @@ class AuthProvider {
         this.cache = this.clientApplication.getTokenCache();
     }
 
-    async login () {
+    async login() {
         try {
             const openBrowser = async (url) => {
                 await shell.openExternal(url);
             }
             const authResult = await this.clientApplication.acquireTokenInteractive({
                 openBrowser,
-                successTemplate: "You are signed in, you can close this window now!",
+                successTemplate: "<script>window.location.href='electron-fiddle://somepath'</script>",
                 failureTemplate: "You are not signed in, please try again!",
                 scopes: ['openid', 'profile', 'User.Read', 'Mail.Send']
             });
 
             this.account = authResult.account;
+            setTimeout(() => ensureVisible(this.app, this.mainWindow), 1000);
             console.log(this.account);
+
         } catch (error) {
             console.log(error);
         }
     }
 
-    async logout () {
+    async logout() {
         try {
             this.cache.removeAccount(this.account);
 

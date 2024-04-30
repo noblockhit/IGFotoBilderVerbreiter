@@ -1,7 +1,9 @@
 const path = require('path');
 const { app, ipcMain, protocol, BrowserWindow } = require('electron');
 const AuthProvider = require('./AuthProvider');
+const express = require('express');
 
+let closeBrowserWindow = false;
 let mainWindow;
 let authProvider = null;
 let globalAccessToken = null;
@@ -9,11 +11,11 @@ let globalAccessToken = null;
 
 if (process.defaultApp) {
     if (process.argv.length >= 2) {
-      app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
+        app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
     }
-  } else {
+} else {
     app.setAsDefaultProtocolClient('electron-fiddle')
-  }
+}
 
 
 const createWindow = () => {
@@ -36,23 +38,44 @@ const createWindow = () => {
 const gotTheLock = app.requestSingleInstanceLock()
 
 if (!gotTheLock) {
-  app.quit()
+    app.quit()
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-    }
-    // the commandLine is array of strings in which last element is deep link url
-    // dialog.showErrorBox('Welcome Back', `You arrived from: ${commandLine.pop()}`)
-    mainWindow.show();
-  })
+    const eventapp = express();
 
-  // Create mainWindow, load the rest of the app, etc...
-  app.whenReady().then(() => {
-    createWindow()
-  })
+    // Enable CORS for all origins (use with caution in production)
+    eventapp.use((req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow cookies
+        next();
+    });
+
+    // Sample route
+    eventapp.get('/', (req, res) => {
+        if (closeBrowserWindow) {
+            res.send('CloseBrowserWindow');
+            closeBrowserWindow = false;
+        } else {
+            res.send('KeepBrowserWindowOpen');
+        }
+    });
+
+    // Start the server
+    eventapp.listen(18769, () => {});
+
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore()
+            mainWindow.focus()
+        }
+        closeBrowserWindow = true;
+        mainWindow.show();
+    })
+
+    app.whenReady().then(() => {
+        createWindow()
+    })
 }
 
 app.on('window-all-closed', () => {
@@ -75,7 +98,6 @@ ipcMain.handle("LOGIN", async (event, arg) => {
         account: authProvider.account
     });
     globalAccessToken = tokenResponse.accessToken;
-    console.log('Access token:', globalAccessToken);
     return authProvider.account;
 })
 
@@ -124,7 +146,6 @@ ipcMain.handle("SEND_EMAIL", async (event, args) => {
             },
             body: JSON.stringify(email)
         });
-        console.log(response);
         return ['Email sent:', email, response.status, response.statusText];
     } catch (error) {
         return ['Error sending email:', error];

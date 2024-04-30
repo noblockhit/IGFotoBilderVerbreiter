@@ -1,11 +1,10 @@
 const { PublicClientApplication } = require('@azure/msal-node');
 const { shell } = require('electron');
+const fs = require('fs');
+const path = require('path');
 
-function ensureVisible(app, mainWindow) {
-    mainWindow.restore(); // Restore if minimized
-    mainWindow.show(); // Ensure the window is visible
-    mainWindow.focus(); // Ensure the window is focused
-}
+const successAndRedirectTemplate = fs.readFileSync(path.join(__dirname, "successAndRedirect.html"), 'utf8');
+
 
 class AuthProvider {
 
@@ -29,7 +28,6 @@ class AuthProvider {
             system: {
                 loggerOptions: {
                     loggerCallback(loglevel, message, containsPii) {
-                        // console.log(message);
                     },
                     piiLoggingEnabled: false,
                     logLevel: "error",
@@ -47,14 +45,12 @@ class AuthProvider {
             }
             const authResult = await this.clientApplication.acquireTokenInteractive({
                 openBrowser,
-                successTemplate: "<script>window.location.href='electron-fiddle://somepath'</script>",
+                successTemplate: successAndRedirectTemplate,
                 failureTemplate: "You are not signed in, please try again!",
                 scopes: ['openid', 'profile', 'User.Read', 'Mail.Send']
             });
 
             this.account = authResult.account;
-            setTimeout(() => ensureVisible(this.app, this.mainWindow), 1000);
-            console.log(this.account);
 
         } catch (error) {
             console.log(error);

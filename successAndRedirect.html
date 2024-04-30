@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        window.location.href = 'electron-fiddle://somepath';
+        function waitForClose() {
+            $.ajax({
+                url: 'http://localhost:18769/',
+                type: 'GET',
+                success: function (data) {
+                    if (data === "CloseBrowserWindow") {
+                        window.close();
+                    } else {
+                        setTimeout(waitForClose, 100);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        waitForClose();
+    </script>
+</head>
+
+<body>
+    <h1>Success, you will be redirected to the app shortly</h1>
+</body>
+
+</html>

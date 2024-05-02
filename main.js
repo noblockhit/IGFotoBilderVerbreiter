@@ -37,7 +37,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
         },
         icon: path.join(__dirname, 'assets', 'icon.ico'),
-        // autoHideMenuBar: true,
+        autoHideMenuBar: true,
     });
     mainWindow.loadFile('index.html');
     authProvider = new AuthProvider(app, mainWindow);

@@ -16,8 +16,6 @@ class AuthProvider {
     account;
     app;
     mainWindow;
-    //authorityString = "724d16e5-093c-45bb-b709-b26daf97e3f8"; //azure: App registrations: Directory (tenant) ID
-    //clientIdString = "8c6718ba-f60f-4740-9b06-f696eaf3d493"; //azure: App registrations: Application (client) ID
 
     constructor(app, mainWindow) {
         this.app = app;

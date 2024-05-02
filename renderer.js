@@ -57,7 +57,8 @@ allImages = [];
 globalAccessToken = null;
 
 class Image {
-    constructor(name, container, base64) {
+    constructor(path, name, container, base64) {
+        this.path = path;
         this.name = name;
         this._container = container;
         this.base64 = base64;
@@ -183,14 +184,14 @@ uploadFilesInput.on("change", async function (e) {
                         imgElement.addClass("preview-image");
                         fileDiv.append(imgElement);
                     }
-
+                    console.log(file.path);
                     // Add file name to the file div
                     var fileName = $("<p>").text(file.name);
                     fileDiv.append(flexLineBreak);
                     fileDiv.append(fileName);
 
                     fileContainer.append(fileDiv);
-                    allImages.push(new Image(file.name, fileDiv, base64Data));
+                    allImages.push(new Image(file.path, file.name, fileDiv, base64Data));
                 };
 
                 // Read the selected file as a data URL

@@ -2,6 +2,8 @@ const { PublicClientApplication } = require('@azure/msal-node');
 const { shell } = require('electron');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
+
 
 const successAndRedirectTemplate = fs.readFileSync(path.join(__dirname, "successAndRedirect.html"), 'utf8');
 
@@ -14,15 +16,19 @@ class AuthProvider {
     account;
     app;
     mainWindow;
-    authorityString = "724d16e5-093c-45bb-b709-b26daf97e3f8";
+    //authorityString = "724d16e5-093c-45bb-b709-b26daf97e3f8"; //azure: App registrations: Directory (tenant) ID
+    //clientIdString = "8c6718ba-f60f-4740-9b06-f696eaf3d493"; //azure: App registrations: Application (client) ID
 
     constructor(app, mainWindow) {
         this.app = app;
         this.mainWindow = mainWindow;
+    }
+
+    async login(tenantId, clientId) {
         this.msalConfig = {
             auth: {
-                clientId: '8c6718ba-f60f-4740-9b06-f696eaf3d493',
-                authority: `https://login.microsoftonline.com/${this.authorityString}`,
+                clientId: clientId,
+                authority: `https://login.microsoftonline.com/${tenantId}`,
             },
 
             system: {
@@ -36,9 +42,6 @@ class AuthProvider {
         };
         this.clientApplication = new PublicClientApplication(this.msalConfig);
         this.cache = this.clientApplication.getTokenCache();
-    }
-
-    async login() {
         try {
             const openBrowser = async (url) => {
                 await shell.openExternal(url);
@@ -51,7 +54,6 @@ class AuthProvider {
             });
 
             this.account = authResult.account;
-
         } catch (error) {
             console.log(error);
         }

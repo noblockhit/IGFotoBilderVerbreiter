@@ -2,6 +2,14 @@ const path = require('path');
 const { app, ipcMain, protocol, BrowserWindow } = require('electron');
 const AuthProvider = require('./AuthProvider');
 const express = require('express');
+let store;
+(async () => {
+    const { default: Store } = await import('electron-store');
+    store = new Store();
+
+    store.set('userSettings.theme', 'light');
+    console.log('User theme:', store.get('userSettings.theme'));
+})();
 
 let closeBrowserWindow = false;
 let mainWindow;
@@ -29,7 +37,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
         },
         icon: path.join(__dirname, 'assets', 'icon.ico'),
-        autoHideMenuBar: true,
+        // autoHideMenuBar: true,
     });
     mainWindow.loadFile('index.html');
     authProvider = new AuthProvider(app, mainWindow);
@@ -90,14 +98,22 @@ app.on('activate', () => {
     }
 });
 
+ipcMain.handle("GET_CACHE", async (event, args) => {
+    const cachedTenantId = store.get('tenantId');
+    const cachedClientId = store.get('clientId');
+    return {tenantId: cachedTenantId, clientId: cachedClientId};
+})
 
-ipcMain.handle("LOGIN", async (event, arg) => {
-    await authProvider.login();
+
+ipcMain.handle("LOGIN", async (event, args) => {
+    await authProvider.login(args.tenantId, args.clientId);
     const tokenResponse = await authProvider.getToken({
         scopes: ['openid', 'profile', 'User.Read', 'Mail.Send'],
         account: authProvider.account
     });
     globalAccessToken = tokenResponse.accessToken;
+    store.set('tenantId', args.tenantId);
+    store.set('clientId', args.clientId);
     return authProvider.account;
 })
 

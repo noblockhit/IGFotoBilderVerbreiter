@@ -5,13 +5,16 @@ const codeEditorContainer = $("#code-editor-container");
 const codeTextArea = $("#code");
 const fileContainer = $("#fileContainer");
 const terminalTextarea = $("#terminalTextarea");
+const tenantIdInput = $("#tenantId");
+const clientIdInput = $("#clientId");
 var removeFileButtons = $(".removeFileButton");
+
 
 let loggedIn = false;
 
 loginBtn.on("click", async () => {
     if (!loggedIn) {
-        const account = await window.renderer.sendLoginMessage();
+        const account = await window.renderer.sendLoginMessage({tenantId: tenantIdInput.val(), clientId: clientIdInput.val()});
         loginBtn.text(`Logout from ${account.name} (${account.username})`);
     } else {
         await window.renderer.sendLogoutMessage();
@@ -297,3 +300,11 @@ async function sendEmail(emailAddr, subject, textContent, imageName = null, imag
 function sleep(secs) {
     return new Promise(resolve => setTimeout(resolve, secs*1000));
 }
+
+async function updateCachedData() {
+    const data = await window.renderer.sendGetCacheMessage();
+    tenantIdInput.val(data.tenantId);
+    clientIdInput.val(data.clientId);
+}
+
+updateCachedData();

@@ -18,16 +18,21 @@
 </head>
 <body>
     <h1>Office file distributer</h1>
+    
+    <div class="sub-container" id="authentification">
+        <input type="text" id="tenantId" placeholder="Tenant ID" tabindex="1">
+        <input type="text" id="clientId" placeholder="Client ID" tabindex="2">
+    </div>
     <div class="container">
         <div class="sub-container rowone" id="authentification">
-            <button id="loginBtn" command="LOGIN" tabindex="1">Login with Microsoft</button>
+            <button id="loginBtn" command="LOGIN" tabindex="3">Login with Microsoft</button>
             <div id="code-editor-container" tabindex="1000000">
                 <textarea id="code" tabindex="-1">
                 </textarea>
             </div>
         </div>
         <div class="sub-container rowone" id="files">
-            <label id="uploadFilesLabel" for="uploadFilesInput" tabindex="2">Upload Files</label>
+            <label id="uploadFilesLabel" for="uploadFilesInput" tabindex="4">Upload Files</label>
             <input type="file" id="uploadFilesInput" class="no-display" multiple>
             <div id="fileContainer"></div>
         </div>

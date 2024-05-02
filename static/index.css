@@ -65,6 +65,19 @@
     
 }
 
+/* inputs with type text*/
+input[type="text"] {
+    padding: .5em;
+    border-radius: .2em;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    width: calc(50% - 5em);
+    margin-top: .25em;
+    margin-left: .5em;
+    margin-right: .5em;
+    margin-bottom: 1em;
+
+}
 
 
 html,

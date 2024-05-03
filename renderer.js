@@ -14,7 +14,7 @@ let loggedIn = false;
 
 loginBtn.on("click", async () => {
     if (!loggedIn) {
-        const account = await window.renderer.sendLoginMessage({tenantId: tenantIdInput.val(), clientId: clientIdInput.val()});
+        const account = await window.renderer.sendLoginMessage({ tenantId: tenantIdInput.val(), clientId: clientIdInput.val() });
         loginBtn.text(`Logout from ${account.name} (${account.username})`);
     } else {
         await window.renderer.sendLogoutMessage();
@@ -31,14 +31,14 @@ uploadFilesLabel.on("keydown", function (e) {
 });
 
 
-fileContainer.on('focus', '.removeFileButton', function(e) {
+fileContainer.on('focus', '.removeFileButton', function (e) {
     $(this).parent()[0].scrollIntoView({
         block: 'nearest'    // Nearest alignment
     });
 });
 
-fileContainer.on('click', '.removeFileButton', function(e) {
-    for (var i=0; i<allImages.length; i++) {
+fileContainer.on('click', '.removeFileButton', function (e) {
+    for (var i = 0; i < allImages.length; i++) {
         if (allImages[i]._container[0] === $(this).parent()[0]) {
             allImages[i].remove();
             break;
@@ -46,7 +46,7 @@ fileContainer.on('click', '.removeFileButton', function(e) {
     }
 });
 
-fileContainer.on('keydown', '.removeFileButton', function(e) {
+fileContainer.on('keydown', '.removeFileButton', function (e) {
     if (e.key === "Escape") {
         codeEditorContainer.focus();
     }
@@ -102,7 +102,7 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
         },
         F5: function (cm) {
             const start = performance.now();
-            
+
             function onEvalComplete() {
                 const end = performance.now();
                 const duration = (end - start).toFixed(2);
@@ -112,7 +112,7 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
             log("Executing code:");
             var code = cm.getValue();
             var wrapped = `(async () => {${code}})();`
-            
+
             evaluateAsyncCode(wrapped, onEvalComplete);
         },
         Esc: function (cm) {
@@ -123,13 +123,13 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
 editor.setSize("100%", "100%");
 editor.setValue(
     "//NEVER PASTE UNALANYZED FOREIGN CODE\n" +
-        "//Example code\n" +
-        "for (var i = 0; i < allImages.length; i++) {\n" +
-        "    var img = allImages[i];\n" +
-        '    print("sending " + img.name);\n' +
-        '    await sendEmail("richard.galfi@wg.nuernberg.de", "Eine test Email direkt aus dem Script", "Hier ist eine test Email und hier auch noch der urspruengliche Name der Datei: " + img.name, img.name, img.base64)\n' +
-        "    await sleep(2);\n" +
-        "}\n"
+    "//Example code\n" +
+    "for (var i = 0; i < allImages.length; i++) {\n" +
+    "    var img = allImages[i];\n" +
+    '    print("sending " + img.name);\n' +
+    '    await sendEmail("richard.galfi@wg.nuernberg.de", "Eine test Email direkt aus dem Script", "Hier ist eine test Email und hier auch noch der urspruengliche Name der Datei: " + img.name, img.name, img.base64);\n' +
+    "    await sleep(2);\n" +
+    "}\n"
 );
 
 codeEditorContainer.on("keydown", function (e) {
@@ -167,8 +167,8 @@ uploadFilesInput.on("change", async function (e) {
                     var fileDiv = $("<div>");
                     fileDiv.addClass("file-div");
 
-                    
-                    var removeButton = $(`<button class="removeFileButton" aria-label="Remove file" tabindex="${allImages.length+1000}">&times;</button>`);
+
+                    var removeButton = $(`<button class="removeFileButton" aria-label="Remove file" tabindex="${allImages.length + 1000}">&times;</button>`);
                     fileDiv.append(removeButton);
 
                     var flexLineBreak = $("<div>");
@@ -238,7 +238,7 @@ function avoidCircularRefs() {
 // A helper function to convert large integers to scientific notation if needed
 function formatInteger(value, threshold) {
     if (typeof value === 'number' && Number.isInteger(value) && Math.abs(value) >= threshold) {
-        return value.toExponential(Math.log10(threshold)-6);  // Convert to scientific notation
+        return value.toExponential(Math.log10(threshold) - 6);  // Convert to scientific notation
     }
     return value;
 }
@@ -280,7 +280,7 @@ let logCount = 1;
 print = log = (...args) => {
     full_string = "";
     for (const obj of args) {
-        
+
         full_string += JSON.stringify(obj, advancedReplacer(100, 1e12), 2) + " ";
     }  // Pretty-print with 2 spaces indentation
     if (full_string === undefined) {
@@ -295,11 +295,11 @@ print = log = (...args) => {
 
 async function sendEmail(emailAddr, subject, textContent, imageName = null, imageAttachmentBytes = null) {
     // add an image attachment to the email
-    return await window.renderer.sendEmail({emailAddr, subject, textContent, imageName, imageAttachmentBytes});
+    return await window.renderer.sendEmail({ emailAddr, subject, textContent, imageName, imageAttachmentBytes });
 }
 
 function sleep(secs) {
-    return new Promise(resolve => setTimeout(resolve, secs*1000));
+    return new Promise(resolve => setTimeout(resolve, secs * 1000));
 }
 
 async function updateCachedData() {

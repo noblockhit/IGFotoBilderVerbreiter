@@ -7,4 +7,3 @@ contextBridge.exposeInMainWorld("renderer", {
     sendSeeProfileMessage: arg => ipcRenderer.invoke("GET_PROFILE"),
     sendEmail: args => ipcRenderer.invoke("SEND_EMAIL", args),
 });
-

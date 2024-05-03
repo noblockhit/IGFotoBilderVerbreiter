@@ -70,7 +70,7 @@ if (!gotTheLock) {
     });
 
     // Start the server
-    eventapp.listen(18769, () => {});
+    eventapp.listen(18769, () => { });
 
     app.on('second-instance', (event, commandLine, workingDirectory) => {
         if (mainWindow) {
@@ -101,7 +101,7 @@ app.on('activate', () => {
 ipcMain.handle("GET_CACHE", async (event, args) => {
     const cachedTenantId = store.get('tenantId');
     const cachedClientId = store.get('clientId');
-    return {tenantId: cachedTenantId, clientId: cachedClientId};
+    return { tenantId: cachedTenantId, clientId: cachedClientId };
 })
 
 

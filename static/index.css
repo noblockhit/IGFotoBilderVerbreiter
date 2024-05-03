@@ -9,7 +9,6 @@
 }
 
 
-
 :root {
     --background-color: #ffffff;
     /* white */
@@ -44,17 +43,26 @@
 }
 
 @keyframes expanding-outline {
-    30%, 90% {      /*  0%  */
+
+    30%,
+    90% {
+        /*  0%  */
         outline-width: .1em;
-        box-shadow: 0 0 .2em  .1em #FDDE01;
+        box-shadow: 0 0 .2em .1em #FDDE01;
     }
-    10% {           /* 50% */
+
+    10% {
+        /* 50% */
         outline-width: .2em;
-        box-shadow: 0 0 .6em  .3em #FDDE01;
+        box-shadow: 0 0 .6em .3em #FDDE01;
     }
-    0%, 20%, 100% {           /* 100% */
+
+    0%,
+    20%,
+    100% {
+        /* 100% */
         outline-width: .3em;
-        box-shadow: 0 0 1em  .5em #FDDE01;
+        box-shadow: 0 0 1em .5em #FDDE01;
     }
 }
 
@@ -62,7 +70,6 @@
     box-shadow: 0 0 1em #FDDE01;
     outline: .1em solid var(--accent-contrast-color-1);
     animation: expanding-outline 2s infinite linear;
-    
 }
 
 /* inputs with type text*/
@@ -229,18 +236,24 @@ label {
 }
 
 .removeFileButton {
-    position: absolute;  /* Absolute positioning */
-    top: .5em;              /* Align to the top */
-    right: .5em;            /* Align to the right */
+    position: absolute;
+    /* Absolute positioning */
+    top: .5em;
+    /* Align to the top */
+    right: .5em;
+    /* Align to the right */
     background: transparent;
     border: none;
     border-radius: 50%;
     color: #000;
-    font-size: 1.5rem;   /* Adjust to your preference */
-    cursor: pointer;     /* Change cursor to pointer on hover */
+    font-size: 1.5rem;
+    /* Adjust to your preference */
+    cursor: pointer;
+    /* Change cursor to pointer on hover */
 }
 
-.removeFileButton:hover, .removeFileButton:focus {
+.removeFileButton:hover,
+.removeFileButton:focus {
     animation: none;
     color: #f00;
 }

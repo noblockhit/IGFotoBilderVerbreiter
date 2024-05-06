@@ -2,6 +2,8 @@ const path = require('path');
 const { app, ipcMain, protocol, BrowserWindow } = require('electron');
 const AuthProvider = require('./AuthProvider');
 const express = require('express');
+const fs = require('fs');
+
 let store;
 (async () => {
     const { default: Store } = await import('electron-store');
@@ -16,7 +18,6 @@ let mainWindow;
 let authProvider = null;
 let globalAccessToken = null;
 
-
 if (process.defaultApp) {
     if (process.argv.length >= 2) {
         app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
@@ -25,6 +26,10 @@ if (process.defaultApp) {
     app.setAsDefaultProtocolClient('electron-fiddle')
 }
 
+
+function sleep(secs) {
+    return new Promise(resolve => setTimeout(resolve, secs * 1000));
+}
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -37,7 +42,7 @@ const createWindow = () => {
             preload: path.join(__dirname, 'preload.js'),
         },
         icon: path.join(__dirname, 'assets', 'icon.ico'),
-        autoHideMenuBar: true,
+        // autoHideMenuBar: true,
     });
     mainWindow.loadFile('index.html');
     authProvider = new AuthProvider(app, mainWindow);
@@ -139,7 +144,7 @@ ipcMain.handle("SEND_EMAIL", async (event, args) => {
                         address: args.emailAddr
                     }
                 }
-            ]
+            ],
         }
     };
 
@@ -163,7 +168,13 @@ ipcMain.handle("SEND_EMAIL", async (event, args) => {
             body: JSON.stringify(email)
         });
         return ['Email sent:', email, response.status, response.statusText];
+        
     } catch (error) {
+        console.log(error);
         return ['Error sending email:', error];
     }
+});
+
+ipcMain.handle("GET_DEFAULT_CODE", async (event, args) => {
+    return fs.readFileSync(path.join(__dirname, 'defaultCode.js'), 'utf8');
 });

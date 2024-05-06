@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld("renderer", {
     sendLogoutMessage: arg => ipcRenderer.invoke("LOGOUT"),
     sendSeeProfileMessage: arg => ipcRenderer.invoke("GET_PROFILE"),
     sendEmail: args => ipcRenderer.invoke("SEND_EMAIL", args),
+    sendGetDefaultCodeMessage: args => ipcRenderer.invoke("GET_DEFAULT_CODE"),
 });

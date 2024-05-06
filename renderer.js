@@ -120,17 +120,10 @@ var editor = CodeMirror.fromTextArea(codeTextArea[0], {
         }
     },
 });
-editor.setSize("100%", "100%");
-editor.setValue(
-    "//NEVER PASTE UNALANYZED FOREIGN CODE\n" +
-    "//Example code\n" +
-    "for (var i = 0; i < allImages.length; i++) {\n" +
-    "    var img = allImages[i];\n" +
-    '    print("sending " + img.name);\n' +
-    '    await sendEmail("richard.galfi@wg.nuernberg.de", "Eine test Email direkt aus dem Script", "Hier ist eine test Email und hier auch noch der urspruengliche Name der Datei: " + img.name, img.name, img.base64);\n' +
-    "    await sleep(2);\n" +
-    "}\n"
-);
+setTimeout(async() => {
+    editor.setSize("100%", "100%");
+    editor.setValue(await window.renderer.sendGetDefaultCodeMessage());
+}, 100);
 
 codeEditorContainer.on("keydown", function (e) {
     if (e.key === "Enter") {

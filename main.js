@@ -176,5 +176,5 @@ ipcMain.handle("SEND_EMAIL", async (event, args) => {
 });
 
 ipcMain.handle("GET_DEFAULT_CODE", async (event, args) => {
-    return fs.readFileSync(path.join(__dirname, 'defaultCode.js'), 'utf8');
+    return fs.readFileSync(path.join(__dirname, 'defaultCode.js'), 'utf8').replaceAll("\\n", "\n");
 });
